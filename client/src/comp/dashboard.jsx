@@ -7,8 +7,9 @@ const Dashboard = () => {
     const [items,setItems] = useState([])
     const [index,setIndex] = useState("")
     const [id,setId] = useState("")
+    const [indexx,setIndexx] = useState("")
     const getTodo = async()=>{
-        const res = await fetch('/gettodo',{
+        const res = await fetch('http://localhost:4000/gettodo',{
             method:"GET",
             headers:{
                 "Accept":"application/json",
@@ -17,7 +18,13 @@ const Dashboard = () => {
         })
         const data = await res.json();
         setItems(data);
+        if(data.length===0){
+        setIndexx(0)
+        }else{
+            setIndexx(data.length)
+        }
     }
+    console.log("indexx",indexx)
     console.log(items)
   
     useEffect(()=>{
@@ -25,7 +32,7 @@ const Dashboard = () => {
     },[])
 
     const updateIndex = async(id)=>{
-        const res = await fetch(`/puttodo/${id}`,{
+        const res = await fetch(`http://localhost:4000/puttodo/${id}`,{
             method:"PUT",
             headers:{
                 "Accept":"application/json",
@@ -59,7 +66,7 @@ const Dashboard = () => {
     },[index])
   return (
     <>
-    <SubmitTodo getTodo={getTodo} />
+    <SubmitTodo getTodo={getTodo} indexx={indexx} />
     <div style={{"display":"flex","flexDirection":"column","justifyContent":"center","alignItems":"center","width":"100vw","minWidth":"50rem","backgroundImage":"linear-gradient(120deg, white,pink)","color":"black","textAlign":"center","marginTop":"5rem"}}>
     <DragDropContext onDragEnd={(results)=>handleDropEnd(results)}>
     <Droppable droppableId='dropId' >

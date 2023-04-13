@@ -13,21 +13,14 @@ app.listen(4000);
 
 //post route for saving todo sent from frontend
 app.post('/todos',async(req,res)=>{
-    let num = 0;
     try{
         const {todo} = req.body;
+        const index = req.body.indexx;
         if(!todo){
             return res.status(401).json("no todo");
         }else{
-            const findIndexx = await usermodel.findOne({index:num})
-            if(findIndexx){
-                await usermodel.findByIdAndUpdate(findIndexx._id,{index:num+1},{new:true})   
-                const saved = await new usermodel({todo,index:num}).save();
+                const saved = await new usermodel({todo,index}).save();
                 res.status(201).json("sucessfully saved todo!")
-            }else{
-                const saved = await new usermodel({todo,index:num}).save();
-                res.status(201).json("sucessfully saved todo!")
-            }
         }
     }catch(e){
         console.log(e);
@@ -74,7 +67,7 @@ app.get('/gettodo',async(req,res)=>{
     }
 })
 // for delteing the commemts only for development purpose not required in the final project..
-app.delete('/find/',async(req,res)=>{
+app.delete('/find',async(req,res)=>{
     const finduser = await usermodel.deleteMany({});
     res.status(201).json(finduser);
 })

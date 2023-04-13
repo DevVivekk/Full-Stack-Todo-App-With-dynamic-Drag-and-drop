@@ -14,8 +14,7 @@ const userSchema = new mongoose.Schema({
         type:String
     },
     index:{
-        type:Number,
-        default:0
+        type:Number
     }
 })
 

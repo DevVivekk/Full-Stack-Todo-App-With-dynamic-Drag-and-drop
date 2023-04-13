@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const SubmitTodo = ({getTodo}) => {
+const SubmitTodo = ({getTodo,indexx}) => {
     const[todo,setTodo] = useState("");
     const submitTodo = async()=>{
-        const res = await fetch('/todos',{
+        const res = await fetch('http://localhost:4000/todos',{
             method:"POST",
             headers:{
                 "Accept":"application/json",
                 "Content-Type":"application/json"
             },
-            body:JSON.stringify({todo})
+            body:JSON.stringify({todo,indexx})
         })
         if(res.status===201){
             setTodo("")
