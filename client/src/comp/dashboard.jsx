@@ -3,6 +3,8 @@ import {DragDropContext,Droppable,Draggable} from 'react-beautiful-dnd'
 import SubmitTodo from './submittodo'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {BsFillCheckCircleFill} from 'react-icons/bs'
+import {ImCross} from 'react-icons/im'
 const Dashboard = () => {
     const [items,setItems] = useState([])
     const [index,setIndex] = useState("")
@@ -10,7 +12,7 @@ const Dashboard = () => {
     const [indexx,setIndexx] = useState("")
     const [source,setSource] = useState("")
     const getTodo = async()=>{
-        const res = await fetch('http://localhost:4000/gettodo',{
+        const res = await fetch('/gettodo',{
             method:"GET",
             headers:{
                 "Accept":"application/json",
@@ -27,7 +29,7 @@ const Dashboard = () => {
     },[])
 
     const updateIndex = async(id)=>{
-        const res = await fetch(`http://localhost:4000/puttodo/${id}`,{
+        const res = await fetch(`/puttodo/${id}`,{
             method:"PUT",
             headers:{
                 "Accept":"application/json",
@@ -62,6 +64,39 @@ const Dashboard = () => {
             updateIndex(id)
         }
     },[index])
+
+
+    //check
+    const setCheck = async(id)=>{
+        const res = await fetch(`/check/${id}`,{
+            method:"PUT",
+            headers:{
+                "Accept":"application/json",
+                "Content-Type":"application/json"
+            }
+        })
+        if(res.status===201){
+            getTodo();
+        }else{
+            toast.error("Error")
+        }
+    }
+
+    //uncheck
+    const setuncheck = async(id)=>{
+        const res = await fetch(`/uncheck/${id}`,{
+            method:"PUT",
+            headers:{
+                "Accept":"application/json",
+                "Content-Type":"application/json"
+            }
+        })
+        if(res.status===201){
+            getTodo();
+        }else{
+            toast.error("Error")
+        }
+    }
   return (
     <>
     <SubmitTodo getTodo={getTodo} indexx={indexx} />
@@ -77,7 +112,11 @@ const Dashboard = () => {
                     <Draggable draggableId={item._id.toString()} index={index} key={index}>
                       {
                         (provided)=>(
-                           <h1 className='todo' {...provided.draggableProps} ref={provided.innerRef} {...provided.dragHandleProps}>{item.todo}</h1>
+                            <div style={{"display":"flex","flexDirection":"row","alignItems":"center","justifyContent":"space-around","width":"40rem", "cursor":"pointer"}}>
+                           <h1 className={item.check?"check todo":"todo"} {...provided.draggableProps}  ref={provided.innerRef} {...provided.dragHandleProps}>{item.todo}</h1>
+                           <BsFillCheckCircleFill stroke='green' onClick={()=>setCheck(item._id)} fill='green' size="2em" />
+                           <ImCross onClick={()=>setuncheck(item._id)} stroke='green' fill='red' size="2em" />
+                           </div>
                         )
                       }
                     </Draggable>

@@ -15,7 +15,11 @@ const userSchema = new mongoose.Schema({
     },
     index:{
         type:Number
-    }
+    },
+    check:{
+        type:Boolean
+    },
+    
 })
 
 const usermodel = new mongoose.model('todos',userSchema)

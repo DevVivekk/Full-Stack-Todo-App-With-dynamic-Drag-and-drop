@@ -69,11 +69,43 @@ app.get('/gettodo',async(req,res)=>{
         res.status(401).json(e)
     }
 })
+
+//check
+app.put('/check/:id',async(req,res)=>{
+    try{
+        const {id} = req.params;
+        const find = await usermodel.findByIdAndUpdate({_id:id},{check:true},{new:true})
+        res.status(201).json("Updated")
+    }catch(e){
+        console.log(e)
+        res.status(401).json(e)
+    }
+})
+
+//uncheck
+app.put('/uncheck/:id',async(req,res)=>{
+    try{
+        const {id} = req.params;
+        const find = await usermodel.findByIdAndUpdate({_id:id},{check:false},{new:true})
+        res.status(201).json("Updated")
+    }catch(e){
+        console.log(e)
+        res.status(401).json(e)
+    }
+})
+
+
 // for delteing the commemts only for development purpose not required in the final project..
 app.delete('/find',async(req,res)=>{
     const finduser = await usermodel.deleteMany({});
     res.status(201).json(finduser);
 })
 
-//production
 
+//production
+if(process.env.NODE_ENV ==="production"){
+    app.use(express.static(path.join(__dirname,"dist")));
+   app.get('/',(req,res)=>{
+    res.sendFile(path.resolve(__dirname,'dist','index.html'));
+   })
+}

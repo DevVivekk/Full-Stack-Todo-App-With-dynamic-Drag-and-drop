@@ -5,7 +5,7 @@ const SubmitTodo = ({getTodo,indexx}) => {
     const[todo,setTodo] = useState("");
     const submitTodo = async()=>{
         console.log("index hitted", indexx)
-        const res = await fetch('http://localhost:4000/todos',{
+        const res = await fetch('/todos',{
             method:"POST",
             headers:{
                 "Accept":"application/json",
