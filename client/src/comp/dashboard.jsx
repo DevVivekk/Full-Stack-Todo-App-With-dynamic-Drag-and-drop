@@ -8,6 +8,7 @@ const Dashboard = () => {
     const [index,setIndex] = useState("")
     const [id,setId] = useState("")
     const [indexx,setIndexx] = useState("")
+    const [source,setSource] = useState("")
     const getTodo = async()=>{
         const res = await fetch('http://localhost:4000/gettodo',{
             method:"GET",
@@ -18,14 +19,8 @@ const Dashboard = () => {
         })
         const data = await res.json();
         setItems(data);
-        if(data.length===0){
-        setIndexx(0)
-        }else{
-            setIndexx(data.length)
-        }
+        setIndexx(data.length)
     }
-    console.log("indexx",indexx)
-    console.log(items)
   
     useEffect(()=>{
         getTodo()
@@ -38,7 +33,7 @@ const Dashboard = () => {
                 "Accept":"application/json",
                 "Content-Type":"application/json"
             },
-            body:JSON.stringify({index})
+            body:JSON.stringify({index,source})
         })
         if(res.status===201){
             toast.success("Sucessfully updated!")
@@ -48,14 +43,17 @@ const Dashboard = () => {
     }
     
     const handleDropEnd = (results)=>{
+        console.log("results",results)
         if(!results.destination) return ;
         setIndex(results.destination.index)
         setId(results.draggableId)
+        setSource(results.source.index)
         console.log("results.destination.index",results.destination.index)
         let tempUser = Array.from(items);
         let [selectedrows] = tempUser.splice(results.source.index,1)
         tempUser.splice(results.destination.index,0,selectedrows)
         setItems(tempUser)
+        console.log("items",items)
     }
     useEffect(()=>{
         if(index===""){

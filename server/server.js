@@ -20,6 +20,7 @@ app.post('/todos',async(req,res)=>{
             return res.status(401).json("no todo");
         }else{
                 const saved = await new usermodel({todo,index}).save();
+                console.log(saved);
                 res.status(201).json("sucessfully saved todo!")
         }
     }catch(e){
@@ -32,15 +33,16 @@ app.post('/todos',async(req,res)=>{
 app.put('/puttodo/:id',async(req,res)=>{
     const {id} = req.params;
     const indexx = req.body.index;
+    const source = req.body.source;
     try{
         if(!indexx && indexx<0){
             return res.status(401).json("no index");
         }else{
 
                 const prevIndex = await usermodel.findOne({index:indexx})
-                console.log(prevIndex);
+                console.log("prevIndex",prevIndex);
                 if(prevIndex){
-                const saveit = await usermodel.findByIdAndUpdate(prevIndex._id,{index:indexx+1},{new:true})   
+                const saveit = await usermodel.findByIdAndUpdate(prevIndex._id,{index:source},{new:true})   
                 console.log("saveit",saveit)
                 const saveIndex = await usermodel.findByIdAndUpdate(id,{index:indexx},{new:true})
                 console.log("saveIndex",saveIndex);
@@ -60,6 +62,7 @@ app.put('/puttodo/:id',async(req,res)=>{
 app.get('/gettodo',async(req,res)=>{
     try{
         const findTodo = await usermodel.find({}).sort({index:1})
+        console.log(findTodo)
         res.status(201).json(findTodo)
     }catch(e){
         console.log(e)
@@ -73,3 +76,4 @@ app.delete('/find',async(req,res)=>{
 })
 
 //production
+

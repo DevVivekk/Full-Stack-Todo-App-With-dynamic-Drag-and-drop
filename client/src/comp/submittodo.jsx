@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const SubmitTodo = ({getTodo,indexx}) => {
     const[todo,setTodo] = useState("");
     const submitTodo = async()=>{
+        console.log("index hitted", indexx)
         const res = await fetch('http://localhost:4000/todos',{
             method:"POST",
             headers:{
@@ -20,6 +21,7 @@ const SubmitTodo = ({getTodo,indexx}) => {
             toast.error("Failed to add todo!")
         }
     }
+    console.log('index',indexx)
   return (
     <div style={{"display":"flex","flexDirection":"column","justifyContent":"center","alignItems":"center","minWidth":"50rem"}}>
         <h1 style={{"color":"red","fontFamily":"sans-serif","textAlign":"center"}}>Hey lets manage your todos as you wish! 😎</h1>
