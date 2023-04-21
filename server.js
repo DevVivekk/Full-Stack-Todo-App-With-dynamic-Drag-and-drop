@@ -8,7 +8,7 @@ const usermodel = require('./db')
 const cors = require('cors')
 app.use(cors());
 app.use(express.json());
-app.listen(4000);
+app.listen(process.env.PORT || 4000);
 
 
 //post route for saving todo sent from frontend
